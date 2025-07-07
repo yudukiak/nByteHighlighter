@@ -42,6 +42,14 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      # ✅ SPA fallback 用
+      - name: Copy index.html to 404.html
+        run: cp build/client/index.html build/client/404.html
+
+      # ✅ アップロード前にフォルダが本当にあるか検査
+      - name: List uploaded files
+        run: ls -R build/client
+
       # ✅ ビルド成果物をアップロード（client 側のみ）
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
