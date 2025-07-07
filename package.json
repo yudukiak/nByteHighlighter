@@ -5,7 +5,6 @@
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
-    "deploy": "npm run build && gh-pages -d build -m \"Updates --skip-ci\"",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc"
   },
