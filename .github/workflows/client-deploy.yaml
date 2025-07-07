@@ -21,39 +21,40 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      # ✅ ① コードを取得
+      # ✅ コードを取得
       - uses: actions/checkout@v4
 
-      # ✅ ② Node.js と pnpm を設定
+      # ✅ pnpm を先にセットアップ
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 8
+          run_install: false
+
+      # ✅ Node.js 環境 + キャッシュ指定
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 8 # ← ← ← ★ 重要: 明示的に pnpm バージョンを指定！
-          run_install: false
-
-      # ✅ ③ 依存インストール
+      # ✅ 依存インストール
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # ✅ ④ ビルド（React Router 向け）
+      # ✅ ビルド（React Router 向け）
       - name: Build
         run: pnpm run build
 
-      # ✅ ⑤ GitHub Pages 用セットアップ
+      # ✅ GitHub Pages 用セットアップ
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # ✅ ⑥ ビルド成果物をアップロード（client 側のみ）
+      # ✅ ビルド成果物をアップロード（client 側のみ）
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: build/client
 
-      # ✅ ⑦ デプロイ実行
+      # ✅ デプロイ実行
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
